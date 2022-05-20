@@ -47,7 +47,7 @@ class _CalculationResultsState extends State<CalculationResults> {
                       children: [
                         Padding(
                             padding: EdgeInsets.only(
-                                top: 150, bottom: 10, right: 20, left: 20),
+                                top: 90, bottom: 10, right: 20, left: 20),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [

@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import '../styles/fonts.dart';
 
 class CustomNavBar extends StatefulWidget {
-  late double height;
+  late double? height;
   bool showInfo = true;
   late String title;
   CustomNavBar(
-      {Key? key, this.height = 180, this.showInfo = true, this.title = ''})
+      {Key? key, this.height = null, this.showInfo = true, this.title = ''})
       : super(key: key);
 
   @override
@@ -25,11 +25,11 @@ class _CustomNavBarState extends State<CustomNavBar> {
             ),
             child: widget.showInfo
                 ? Padding(
-                    padding: EdgeInsets.only(top: 20),
-                    child: Center(
-                        child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
+                    padding: EdgeInsets.only(top: 40, bottom: 50),
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
                           Stack(children: [
                             GestureDetector(
                               onTap: () {
@@ -51,11 +51,17 @@ class _CustomNavBarState extends State<CustomNavBar> {
                             Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  Text(widget.title.toUpperCase(),
-                                      style: AppFontStyle.biggest_heading)
+                                  Container(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.5,
+                                      child: FittedBox(
+                                          child: Text(
+                                              widget.title.toUpperCase(),
+                                              style: AppFontStyle
+                                                  .biggest_heading)))
                                 ])
                           ])
-                        ])))
+                        ]))
                 : Container()));
   }
 }

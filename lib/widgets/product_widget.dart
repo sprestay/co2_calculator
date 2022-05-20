@@ -5,7 +5,12 @@ import '../styles/fonts.dart';
 class ProductWidget extends StatefulWidget {
   late Product prd;
   late bool selected;
-  ProductWidget({Key? key, required this.prd, this.selected = false})
+  late Function deleteFunc;
+  ProductWidget(
+      {Key? key,
+      required this.prd,
+      this.selected = false,
+      this.deleteFunc = print})
       : super(key: key);
 
   @override
@@ -26,22 +31,25 @@ class _ProductWidgetState extends State<ProductWidget> {
         ? Container(
             child: Stack(children: [
             Positioned(
-                left: MediaQuery.of(context).size.width * 0.8 - 10,
-                top: 20,
-                child: Container(
-                  width: 40,
-                  height: 40,
-                  child: Padding(
-                      child: Icon(Icons.clear_rounded,
-                          size: 25, color: Colors.white),
-                      padding: EdgeInsets.only(left: 10)),
-                  decoration: BoxDecoration(
-                    color: Color(0xFF9f9892),
-                    borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(100),
-                        bottomRight: Radius.circular(100)),
-                  ),
-                )),
+              left: MediaQuery.of(context).size.width * 0.8 - 10,
+              top: 20,
+              child: GestureDetector(
+                  onTap: () => widget.deleteFunc(),
+                  child: Container(
+                    width: 40,
+                    height: 40,
+                    child: Padding(
+                        child: Icon(Icons.clear_rounded,
+                            size: 25, color: Colors.white),
+                        padding: EdgeInsets.only(left: 10)),
+                    decoration: BoxDecoration(
+                      color: Color(0xFF9f9892),
+                      borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(100),
+                          bottomRight: Radius.circular(100)),
+                    ),
+                  )),
+            ),
             Container(
                 width: MediaQuery.of(context).size.width * 0.8,
                 decoration: BoxDecoration(

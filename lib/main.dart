@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import './screens/first_page.dart';
 import './screens/add_product.dart';
 import './screens/calculation_results.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,6 +15,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      // builder: (context, child) => ResponsiveWrapper.builder(
+      //   // ClampingScrollWrapper.builder(context, child!),
+      //   // breakpoints: const [
+      //   //   ResponsiveBreakpoint.resize(1700, name: MOBILE),
+      //   //   // ResponsiveBreakpoint.autoScale(600, name: TABLET),
+      //   //   // ResponsiveBreakpoint.resize(800, name: DESKTOP),
+      //   //   // ResponsiveBreakpoint.autoScale(1700, name: "XL")
+      //   // ]
+      //   child,
+      //   maxWidth: 400,
+      //   minWidth: 370,
+
+      //   defaultScale: true,
+      // ),
       title: 'Flutter Demo',
       theme: ThemeData(
           primarySwatch: Colors.blue,

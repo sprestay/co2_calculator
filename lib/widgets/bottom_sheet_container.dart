@@ -3,12 +3,12 @@ import './button_on_bottom_sheet.dart';
 
 class BottomSheetContainer extends StatefulWidget {
   late Color cl;
-  late double height;
+  late double? height;
   late Widget content;
   BottomSheetContainer({
     Key? key,
     this.cl = Colors.white,
-    this.height = 180,
+    this.height = null,
     this.content = const Text(""),
   }) : super(key: key);
 
@@ -27,7 +27,14 @@ class _BottomSheetContainerState extends State<BottomSheetContainer> {
             decoration: BoxDecoration(
               color: widget.cl,
             ),
-            child: widget.content));
+            child: Padding(
+              padding: EdgeInsets.only(top: 45, bottom: 20),
+              child: Column(
+                children: [widget.content],
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+              ),
+            )));
   }
 }
 

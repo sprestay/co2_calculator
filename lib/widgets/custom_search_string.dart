@@ -5,9 +5,14 @@ class CustomSearchString extends StatefulWidget {
   late String title;
   late TextInputType keyboard;
   late Function func;
+  late Function onfocus;
   List<String> options = [];
   CustomSearchString(
-      {Key? key, this.title = '', this.options = const [], this.func = print})
+      {Key? key,
+      this.title = '',
+      this.options = const [],
+      this.func = print,
+      this.onfocus = print})
       : super(key: key);
 
   @override
@@ -51,6 +56,7 @@ class _CustomSearchStringState extends State<CustomSearchString> {
                 });
                 controller.text = v;
                 widget.func(v);
+                widget.onfocus(false);
                 floatingDropdown?.remove();
                 isDropdownOpened = !isDropdownOpened;
               },
@@ -76,6 +82,7 @@ class _CustomSearchStringState extends State<CustomSearchString> {
                 floatingDropdown = _createFloatingDropdown();
                 Overlay.of(context)?.insert(floatingDropdown!);
                 isDropdownOpened = !isDropdownOpened;
+                widget.onfocus(true);
               }
             },
             keyboardType: TextInputType.text,

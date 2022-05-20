@@ -30,4 +30,18 @@ class User with ChangeNotifier {
     }
     notifyListeners();
   }
+
+  void deleteProduct(Product product) async {
+    products.remove(product);
+    final prefs = await SharedPreferences.getInstance();
+    final String? pref_products = prefs.getString('products');
+    if (pref_products != null) {
+      Map<String, dynamic> js = {
+        "products": products.map((e) => e.toJson()).toList()
+      };
+      String js_string = jsonEncode(js);
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString("products", js_string);
+    }
+  }
 }

@@ -4,6 +4,7 @@ import '../styles/fonts.dart';
 class CustomSelector extends StatefulWidget {
   late String title;
   late Function callback;
+  late Function onfocus;
   List<String> options = [];
   bool reversed = false;
   String dropDownValue = '';
@@ -11,6 +12,7 @@ class CustomSelector extends StatefulWidget {
       {Key? key,
       required this.title,
       this.reversed = false,
+      this.onfocus = print,
       this.options = const [],
       this.dropDownValue = '',
       this.callback = print})
@@ -56,6 +58,7 @@ class _CustomSelectorState extends State<CustomSelector> {
                   dropdownValue = v;
                 });
                 widget.callback(v);
+                widget.onfocus(false);
                 floatingDropdown?.remove();
                 isDropdownOpened = !isDropdownOpened;
               },
@@ -110,10 +113,12 @@ class _CustomSelectorState extends State<CustomSelector> {
           setState(() {
             if (isDropdownOpened) {
               floatingDropdown?.remove();
+              widget.onfocus(false);
             } else {
               findDropDownButton();
               floatingDropdown = _createFloatingDropdown();
               Overlay.of(context)?.insert(floatingDropdown!);
+              widget.onfocus(true);
             }
 
             isDropdownOpened = !isDropdownOpened;

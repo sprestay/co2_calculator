@@ -14,6 +14,8 @@ import '../data/fabric.dart';
 import '../data/appeal.dart';
 import '../data/cities.dart';
 import '../models/city.dart';
+// import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'dart:async';
 
 class AddProduct extends StatefulWidget {
   late Product product;
@@ -27,10 +29,25 @@ class AddProduct extends StatefulWidget {
 
 class _AddProductState extends State<AddProduct> {
   late Product product;
+  late StreamSubscription<bool> keyboardSubscription;
+  bool isVisible = true;
 
   @override
   void initState() {
     product = widget.product;
+    // var keyboardVisibilityController = KeyboardVisibilityController();
+    // keyboardSubscription =
+    //     keyboardVisibilityController.onChange.listen((bool visible) {
+    //   setState(() {
+    //     isVisible = visible;
+    //   });
+    // });
+  }
+
+  void focusChanger(bool foc) {
+    setState(() {
+      isVisible = !foc;
+    });
   }
 
   @override
@@ -46,10 +63,11 @@ class _AddProductState extends State<AddProduct> {
                         top: 50, left: 20, right: 20, bottom: 50),
                     child: SingleChildScrollView(
                         child: Padding(
-                            padding: EdgeInsets.only(top: 150, bottom: 150),
+                            padding: EdgeInsets.only(top: 90, bottom: 150),
                             child: Column(children: [
                               CustomSelector(
                                 options: appeal,
+                                onfocus: focusChanger,
                                 callback: (String v) {
                                   product.setTypeOfGarment = v;
                                 },
@@ -59,12 +77,14 @@ class _AddProductState extends State<AddProduct> {
                               CustomSelector(
                                   options: fabric.keys.toList(),
                                   title: "TYPE OF FABRIC",
+                                  onfocus: focusChanger,
                                   callback: (String v) {
                                     product.setTypeOfFabric = v;
                                     product.setGSM = fabric[v]!['GSM'];
                                   }),
                               SizedBox(height: 20),
                               CustomSearchString(
+                                  onfocus: focusChanger,
                                   title: "LOCATION OF SUPPLIER",
                                   options: cities.keys.toList(),
                                   func: (String v) {
@@ -77,6 +97,7 @@ class _AddProductState extends State<AddProduct> {
                               }),
                               SizedBox(height: 16),
                               EllipseInputField(
+                                  onfocus: focusChanger,
                                   text_type: 'int',
                                   func: (int v) {
                                     product.setTotalAmountProducted = v;
@@ -88,6 +109,7 @@ class _AddProductState extends State<AddProduct> {
                                   title: "TOTAL AMOUNT PRODUCTED"),
                               SizedBox(height: 16),
                               EllipseInputField(
+                                  onfocus: focusChanger,
                                   text_type: 'int',
                                   func: (int v) {
                                     product.setAmountDelivered = v;
@@ -99,6 +121,7 @@ class _AddProductState extends State<AddProduct> {
                                   title: "TOTAL AMOUNT DELIVERED"),
                               SizedBox(height: 16),
                               EllipseInputField(
+                                onfocus: focusChanger,
                                 title: "LENGTH",
                                 text_type: 'double',
                                 func: (double v) {
@@ -110,6 +133,7 @@ class _AddProductState extends State<AddProduct> {
                               ),
                               SizedBox(height: 16),
                               EllipseInputField(
+                                  onfocus: focusChanger,
                                   title: "WIDTH",
                                   text_type: 'double',
                                   func: (double v) {
@@ -120,6 +144,7 @@ class _AddProductState extends State<AddProduct> {
                                       : product.width.toString()),
                               SizedBox(height: 16),
                               EllipseInputField(
+                                  onfocus: focusChanger,
                                   text_type: 'double',
                                   func: (double v) {
                                     product.setGarmentPatternArea = v;
@@ -130,6 +155,7 @@ class _AddProductState extends State<AddProduct> {
                                   title: "GARMENT PATTERN AREA OF 1 ITEM"),
                               SizedBox(height: 16),
                               EllipseInputField(
+                                  onfocus: focusChanger,
                                   text_type: 'double',
                                   func: (double v) {
                                     product.setAveragePurchase = v;
@@ -139,31 +165,33 @@ class _AddProductState extends State<AddProduct> {
                                       : product.average_purchase.toString(),
                                   title: "AVERAGE PURCHASE AT SUPPLIER")
                             ])))),
-                Positioned(
-                    bottom: 0,
-                    child: BottomSheetContainer(
-                      height: 150,
-                      cl: Colors.white,
-                      content: ButtonOnBottomSheet(callback: () async {
-                        Map<String, dynamic> js = product.toJson();
-                        List<String> keys = js.keys.toList();
-                        for (int i = 0; i < keys.length; i++) {
-                          if (js[keys[i]] == null ||
-                              (js[keys[i]].runtimeType == 'String' &&
-                                  js[keys[i]].isEmpty)) {
-                            SnackBar snackBar = SnackBar(
-                              content:
-                                  Text(keys[i].toString() + " is incorrect"),
-                            );
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackBar);
-                            return;
-                          }
-                        }
-                        widget.func(product);
-                        Navigator.pop(context);
-                      }),
-                    )),
+                isVisible
+                    ? Positioned(
+                        bottom: 0,
+                        child: BottomSheetContainer(
+                          // height: 150,
+                          cl: Colors.white,
+                          content: ButtonOnBottomSheet(callback: () async {
+                            Map<String, dynamic> js = product.toJson();
+                            List<String> keys = js.keys.toList();
+                            for (int i = 0; i < keys.length; i++) {
+                              if (js[keys[i]] == null ||
+                                  (js[keys[i]].runtimeType == 'String' &&
+                                      js[keys[i]].isEmpty)) {
+                                SnackBar snackBar = SnackBar(
+                                  content: Text(
+                                      keys[i].toString() + " is incorrect"),
+                                );
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(snackBar);
+                                return;
+                              }
+                            }
+                            widget.func(product);
+                            Navigator.pop(context);
+                          }),
+                        ))
+                    : Container(),
                 Positioned(child: CustomNavBar(title: "FILL OUT THE FORM")),
               ],
             )));

@@ -4,7 +4,9 @@ import '../models/product.dart';
 
 class AddProductButton extends StatefulWidget {
   late Function func;
-  AddProductButton({Key? key, required this.func}) : super(key: key);
+  late Size media;
+  AddProductButton({Key? key, required this.func, required this.media})
+      : super(key: key);
 
   @override
   State<AddProductButton> createState() => _AddProductButtonState();
@@ -25,6 +27,14 @@ class _AddProductButtonState extends State<AddProductButton> {
           );
         },
         child: Container(
-            child: Image.asset('add_button.png'), width: 100, height: 100));
+          child: Image.asset('add_button.png'),
+          constraints: BoxConstraints(
+            maxHeight: 100,
+            maxWidth: 100,
+            minWidth: 30,
+            minHeight: 30,
+          ),
+          width: widget.media.width * 0.2,
+        ));
   }
 }
